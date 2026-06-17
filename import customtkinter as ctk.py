@@ -94,7 +94,8 @@ def calcular():
                 "cos": cos,
                 "tan": tan,
                 "sqrt": sqrt,
-                "pi": pi
+                "pi": pi,
+                "oo": oo,
             }
         )
 
