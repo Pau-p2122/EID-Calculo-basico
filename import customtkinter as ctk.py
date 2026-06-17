@@ -57,34 +57,19 @@ def aproximar_limite(funcion, h):
                 float(h) - delta
             ).evalf()
 
-            derecha = funcion.subs(
-                x,
-                float(h) + delta
-            ).evalf()
+            derecha = funcion.subs(x, float(h) + delta).evalf()
 
             if abs(float(izquierda - derecha)) < 0.001:
-
-                return (
-                    izquierda,
-                    derecha,
-                    (izquierda + derecha) / 2,
-                    True
-                )
-
+                return (izquierda, derecha, (izquierda + derecha) / 2, True)
         return izquierda, derecha, None, False
-
     except:
-
         return None, None, None, False
 
 # Función principal
 def calcular():
 
     try:
-
-        texto = limpiar_expresion(
-            entrada_funcion.get()
-        )
+        texto = limpiar_expresion(entrada_funcion.get())
 
         funcion = sympify(
             texto,
@@ -95,18 +80,11 @@ def calcular():
                 "tan": tan,
                 "sqrt": sqrt,
                 "pi": pi,
-                "oo": oo,
-            }
-        )
+                "oo": oo,})
 
-        h = sympify(
-            entrada_h.get()
-        )
+        h = sympify( entrada_h.get())
 
-        izq, der, resultado, existe = aproximar_limite(
-            funcion,
-            h
-        )
+        izq, der, resultado, existe = aproximar_limite( funcion, h)
 
         if existe:
 
@@ -114,8 +92,7 @@ def calcular():
                 f"Límite izquierdo: {izq}\n"
                 f"Límite derecho: {der}\n\n"
                 "Ambos coinciden.\n"
-                "El límite existe."
-            )
+                "El límite existe.")
 
         else:
 
@@ -125,22 +102,13 @@ def calcular():
                 f"Límite izquierdo: {izq}\n"
                 f"Límite derecho: {der}\n\n"
                 "Los límites laterales son distintos o "
-                "no pudieron aproximarse."
-            )
+                "no pudieron aproximarse.")
 
-        etiqueta_resultado.configure(
-            text=f"Resultado: {resultado}"
-        )
+        etiqueta_resultado.configure(text=f"Resultado: {resultado}")
 
-        caja_procedimiento.delete(
-            "1.0",
-            "end"
-        )
+        caja_procedimiento.delete( "1.0", "end")
 
-        caja_procedimiento.insert(
-            "1.0",
-            procedimiento
-        )
+        caja_procedimiento.insert("1.0", procedimiento)
 
         # Eliminar gráfico anterior
         for widget in frame_grafico.winfo_children():
@@ -167,11 +135,7 @@ def calcular():
         while valor <= fin:
 
             try:
-
-                y = funcion.subs(
-                    x,
-                    valor
-                ).evalf()
+                y = funcion.subs( x, valor).evalf()
 
                 if y.is_real and abs(float(y)) < 1000:
 
@@ -182,45 +146,28 @@ def calcular():
                 pass
 
             valor += 0.1
-
-        figura, ax = plt.subplots(
-            figsize=(6, 4)
-        )
-
+        figura, ax = plt.subplots( figsize=(6, 4))
         ax.plot(xs, ys)
 
         if h not in (oo, -oo):
 
-            ax.axvline(
-                float(h),
-                linestyle="--"
-            )
+            ax.axvline(float(h), linestyle="--")
 
         ax.set_title(
-            "Gráfica de la Función"
-        )
+            "Gráfica de la Función")
 
         ax.set_xlabel("x")
         ax.set_ylabel("f(x)")
         ax.grid(True)
 
-        canvas = FigureCanvasTkAgg(
-            figura,
-            master=frame_grafico
-        )
-
+        canvas = FigureCanvasTkAgg( figura, master=frame_grafico)
         canvas.draw()
-
         canvas.get_tk_widget().pack(
             fill="both",
-            expand=True
-        )
+            expand=True)
 
     except Exception as e:
-
-        etiqueta_resultado.configure(
-            text=f"Error: {e}"
-        )
+        etiqueta_resultado.configure(text=f"Error: {e}")
 
 # CONFIGURACIÓN DE LA APP
 
@@ -228,79 +175,42 @@ ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("blue")
 
 app = ctk.CTk()
-
-app.title(
-    "Analizador y Visualizador de Límites"
-)
-
+app.title("Analizador y Visualizador de Límites")
 app.geometry("900x750")
 
 # Título
-ctk.CTkLabel(
-    app,
-    text="Analizador y Visualizador de Límites",
-    font=("Arial", 22, "bold")
-).pack(pady=15)
+ctk.CTkLabel( app, text="Analizador y Visualizador de Límites", font=("Arial", 22, "bold")).pack(pady=15)
 
 # Entrada función
-entrada_funcion = ctk.CTkEntry(
-    app,
-    width=500,
-    placeholder_text="Ej: (x**2-1)/(x-1)"
-)
+entrada_funcion = ctk.CTkEntry( app, width=500, placeholder_text="Ej: (x**2-1)/(x-1)")
 
 entrada_funcion.pack(pady=10)
 
 # Entrada h
 entrada_h = ctk.CTkEntry(
-    app,
-    width=250,
-    placeholder_text="Ingrese h (1, 2, oo, -oo)"
-)
+    app, width=250, placeholder_text="Ingrese h (1, 2, oo, -oo)")
 
 entrada_h.pack(pady=10)
 
 # Botón
-ctk.CTkButton(
-    app,
-    text="Calcular",
-    command=calcular
-).pack(pady=10)
+ctk.CTkButton(app, text="Calcular", command=calcular).pack(pady=10)
 
 # Resultado
-etiqueta_resultado = ctk.CTkLabel(
-    app,
-    text="Resultado del límite"
-)
+etiqueta_resultado = ctk.CTkLabel(app, text="Resultado del límite")
 
 etiqueta_resultado.pack(pady=10)
 
 # Procedimiento
-ctk.CTkLabel(
-    app,
-    text="Procedimiento"
-).pack()
+ctk.CTkLabel(app, text="Procedimiento").pack()
 
-caja_procedimiento = ctk.CTkTextbox(
-    app,
-    height=120
-)
+caja_procedimiento = ctk.CTkTextbox(app, height=120)
 
-caja_procedimiento.pack(
-    fill="x",
-    padx=20,
-    pady=10
-)
+caja_procedimiento.pack(fill="x", padx=20, pady=10)
 
 # Área gráfica
 frame_grafico = ctk.CTkFrame(app)
 
-frame_grafico.pack(
-    fill="both",
-    expand=True,
-    padx=20,
-    pady=20
-)
+frame_grafico.pack(fill="both", expand=True, padx=20, pady=20)
 
 # Ejecutar
 app.mainloop()
