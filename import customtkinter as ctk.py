@@ -5,9 +5,11 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import re
 
 # Variable matemática
+# Define la 'x' como incógnita matemática real
 x = symbols("x")
 
 # Corrige expresiones comunes
+# Adapta lo que escribe el usuario para que Python lo entienda
 def limpiar_expresion(texto):
 
     texto = texto.lower()
@@ -23,11 +25,13 @@ def limpiar_expresion(texto):
     return texto
 
 # Aproximación numérica del límite
+# Calcula el límite acercándose por ambos lados
 def aproximar_limite(funcion, h):
 
     try:
 
         # Límite cuando x tiende a +∞
+        # Resuelve el caso si el límite tiende a infinito positivo
         if h == oo:
 
             a = funcion.subs(x, 100000).evalf()
@@ -50,6 +54,7 @@ def aproximar_limite(funcion, h):
             return a, b, None, False
 
         # Límites normales
+        # Usa valores muy pequeños para acercarse al número
         for delta in [1e-2, 1e-4, 1e-6]:
 
             izquierda = funcion.subs(
@@ -66,6 +71,7 @@ def aproximar_limite(funcion, h):
         return None, None, None, False
 
 # Función principal
+# Borra la gráfica vieja para que no se encime la nueva
 def calcular():
 
     try:
